@@ -58,14 +58,14 @@ process.source = cms.Source("PoolSource",
     )
 print (" >> Loaded",len(options.inputFiles),"input files from list.")
 
-#process.load("ProdTutorial.ProducerTest.DetImg_cfi")
-process.load("E2eDL.E2eDLrec.DetImg_cfi")
-#process.load("ProdTutorial.ProducerTest.EGInference_cfi")
-process.load("E2eDL.E2eDLrec.EGInference_cfi")
-#process.load("ProdTutorial.ProducerTest.QGInference_cfi")
-process.load("E2eDL.E2eDLrec.QGInference_cfi")
-#process.load("ProdTutorial.ProducerTest.TopInference_cfi")
-process.load("E2eDL.E2eDLrec.TopInference_cfi")
+process.load("ProdTutorial.ProducerTest.DetImg_cfi")
+#process.load("E2eDL.E2eDLrec.DetImg_cfi")
+process.load("ProdTutorial.ProducerTest.EGInference_cfi")
+#process.load("E2eDL.E2eDLrec.EGInference_cfi")
+process.load("ProdTutorial.ProducerTest.QGInference_cfi")
+#process.load("E2eDL.E2eDLrec.QGInference_cfi")
+process.load("ProdTutorial.ProducerTest.TopInference_cfi")
+#process.load("E2eDL.E2eDLrec.TopInference_cfi")
 process.ProducerFrames.mode = cms.string('JetLevel')#options.processMode
 
 #process.out = cms.OutputModule("PoolOutputModule",
