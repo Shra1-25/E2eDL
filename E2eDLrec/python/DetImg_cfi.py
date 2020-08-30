@@ -28,3 +28,4 @@ ProducerFrames = cms.EDProducer('DetImgProducer'
     , granularityMultiPhi = cms.int32(1)
     , granularityMultiEta = cms.int32(1)
     )
+    print("hello!!")
