@@ -2,7 +2,7 @@
 #include "E2eDL/E2eDLrec/plugins/predict_tf.h"
 #include "tensorflow/core/graph/default_device.h"
 
-std::vector<float> predict_tf(std::vector<std::vector<float>>& vinputFrame, string model_filename, string input_layer_name, string output_layer_name){
+std::vector<float> predict_tf(std::vector<std::vector<float>>& vinputFrame, string model_filename, string input_layer_name, string output_layer_name, no_channels){
  tensorflow::Session* session;
  tensorflow::GraphDef graph_def;
  tensorflow::SessionOptions opts;
