@@ -242,7 +242,7 @@ void DetImgProducer::fillTracksAtECALstitched ( const edm::Event& iEvent, const 
 
   edm::Handle<reco::VertexCollection> vertexInfo;
   iEvent.getByToken(vertexCollectionT_, vertexInfo);
-  const reco::VertexCollection& vtxs = *vertexInfo;
+  //const reco::VertexCollection& vtxs = *vertexInfo;
 
   reco::Track::TrackQuality tkQt_ = reco::Track::qualityByName("highPurity");
 
