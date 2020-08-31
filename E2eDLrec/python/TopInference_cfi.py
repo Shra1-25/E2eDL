@@ -52,4 +52,5 @@ TopInference = cms.EDProducer('TopProducer'
     , isTTbar = cms.bool(True)
     , minTopPt = cms.double(200.)
     , maxTopEta = cms.double(2.4)
+    , TopQuarksModelName = cms.string("ResNet.pb")
     )
