@@ -10,7 +10,7 @@ std::vector<float> predict_tf(std::vector<std::vector<float>>& vinputFrame, stri
  // create a new session
  TF_CHECK_OK(NewSession(opts, &session));
  
- std::string graph_definition="E2eDL/E2eDLrec/plugins/"+model_filename;
+ std::string graph_definition="E2eDL/"+model_filename;
  std::cout<<" >> Running Inference."<<endl;
  int frame_height = vinputFrame.size();
  int frame_width = vinputFrame[0].size();
