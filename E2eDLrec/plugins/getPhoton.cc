@@ -40,7 +40,7 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
  
  edm::Handle<EcalRecHitCollection> EBRecHitsH;
  iEvent.getByToken(EBRecHitCollectionT_, EBRecHitsH);
- 
+ modelName = iConfig.getParameter<std::string>("EGModelName");
  // Provides access to global cell position and coordinates below
  /*edm::ESHandle<CaloGeometry> caloGeomH;
  iSetup.get<CaloGeometryRecord>().get(caloGeomH);
