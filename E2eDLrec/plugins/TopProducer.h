@@ -135,6 +135,7 @@ class TopProducer : public edm::stream::EDProducer<> {
       bool runEvtSel_jet      ( const edm::Event&, const edm::EventSetup& );
       void branchesJetInfoAtECALstitched   ( TTree*, edm::Service<TFileService>& );
       
+      std::string modelName;
       typedef std::vector<reco::PFCandidate>  PFCollection;
       edm::EDGetTokenT<PFCollection> pfCollectionT_;
       //std::vector<std::vector<float>> vEB_frame; //= std::vector<std::vector<float>> (vEB_frame_height,std::vector<float> (vEB_frame_width, 0.0));
