@@ -67,6 +67,9 @@ process.load("E2eDL.E2eDLrec.QGInference_cfi")
 #process.load("ProdTutorial.ProducerTest.TopInference_cfi")
 process.load("E2eDL.E2eDLrec.TopInference_cfi")
 process.ProducerFrames.mode = cms.string('JetLevel')#options.processMode
+process.EGInference.EGModelName = options.EGModelName
+process.QGInference.QGModelName = options.QGModelName
+process.TopInference.TopQuarksModelName = options.TopQuarksModelName
 
 #process.out = cms.OutputModule("PoolOutputModule",
 #    fileName = cms.untracked.string('myOutputFile.root')
