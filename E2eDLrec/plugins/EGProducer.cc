@@ -49,14 +49,6 @@ EGProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
  
    //producing cropped frames, getting photon seeds and running inference for getting their prediction
    get_photons(iEvent, iSetup, vEB_photonFrames );//stored in vEB_frames vectors
-   /*if (vIeta_Emax_.size()>0){
-   photonJetCollection.putIetaSeed(vIeta_Emax_);}
-   else {std::vector<float> empty_ieta_vec; photonJetCollection.putIetaSeed(empty_ieta_vec);}
-   if (vIphi_Emax_.size()>0){
-   photonJetCollection.putIphiSeed(vIphi_Emax_);}
-   else {std::vector<float> empty_iphi_vec; photonJetCollection.putIphiSeed(empty_iphi_vec);}*/
-   
-   //vEB_photonFrames.push_back(photonJetCollection);
 
    // Code (Commented below) to verify photonFrameJetCollection Branch of edm root file.
    /*std::cout<<"Current size of photon jet collection: "<<vEB_photonFrames.size()<<std::endl;
@@ -80,10 +72,6 @@ EGProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     std::cout<<" >> Class Object predictions of seed "<<seedidx<<"/"<<temp_flat.size()<<" are: "<<std::endl;
     predict_tf(temp_frame,"e_vs_ph_model.pb","inputs","softmax_1/Sigmoid");
    }*/
-   
-   /*trialCollection trial1;
-   std::unique_ptr<trialCollection> trial_edm (new trialCollection(trial1));
-   iEvent.put(std::move(trial_edm),"trialCollection");*/
    
    std::unique_ptr<EB_photonFrames> vEB_photonFrames_edm (new EB_photonFrames(vEB_photonFrames));
    iEvent.put(std::move(vEB_photonFrames_edm),"photonFramePredSeedCollection");
