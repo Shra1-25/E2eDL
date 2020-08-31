@@ -49,8 +49,8 @@ process.GlobalTag.globaltag = cms.string('80X_dataRun2_HLT_v12')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet( 
-    #input = cms.untracked.int32(options.maxEvents) 
-    input = cms.untracked.int32(1000) 
+    input = cms.untracked.int32(options.maxEvents) 
+    #input = cms.untracked.int32(1000) 
     #input = cms.untracked.int32(-1) 
     #input = cms.untracked.int32(1000000) 
     )
