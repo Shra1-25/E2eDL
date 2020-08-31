@@ -237,8 +237,8 @@ QGProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 				
     //vECALstitchedClass.push_back(predict_tf(vECALstitched_frame, "qg_model.pb", "inputs","softmax_1/Sigmoid"));
     //vTracksAtECALstitchedPtClass.push_back(predict_tf(vTracksAtECALstitchedPt_frame, "qg_model.pb", "inputs", "softmax_1/Sigmoid"));
-      vECALstitchedClass=predict_tf(vECALstitched_frame, "ResNet.pb", "inputs","outputs");
-      vTracksAtECALstitchedPtClass=predict_tf(vTracksAtECALstitchedPt_frame, "ResNet.pb", "inputs", "outputs");
+      vECALstitchedClass=predict_tf(vECALstitched_frame, modelName, "inputs","outputs");
+      vTracksAtECALstitchedPtClass=predict_tf(vTracksAtECALstitchedPt_frame, modelName, "inputs", "outputs");
       framePredCollection qgECALstitchedJetCollection;
       framePredCollection qgTracksAtECALstitchedJetCollection;
 				
@@ -316,7 +316,7 @@ QGProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     file3<<"\n";
    }*/
    //vHBHEenergyClass.push_back(predict_tf(vHBHEenergy_frame, "qg_model.pb", "inputs", "softmax_1/Sigmoid"));
-   vHBHEenergyClass=predict_tf(vHBHEenergy_frame, "ResNet.pb", "inputs", "outputs");
+   vHBHEenergyClass=predict_tf(vHBHEenergy_frame, modelName, "inputs", "outputs");
    framePredCollection qgHBHEJetCollection;
    qgHBHEJetCollection.putPredCollection(vHBHEenergyClass);
    qgHBHEJetCollection.putFrameCollection(vHBHEenergy_frame);
