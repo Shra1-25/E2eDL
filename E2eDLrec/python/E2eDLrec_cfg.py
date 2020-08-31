@@ -48,7 +48,7 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = cms.string('80X_dataRun2_HLT_v12')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
-process.maxEvents = cms.untracked.PSet( input = options.maxEvents ) #options.maxEvents
+process.maxEvents = options.maxEvents #cms.untracked.PSet( input = cms.int(5) )
 process.maxEvents = options.maxEvents
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
