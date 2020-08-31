@@ -28,4 +28,5 @@ QGInference = cms.EDProducer('QGProducer'
     , minJetPt = cms.double(35.)
     , maxJetEta = cms.double(2.4)
     , z0PVCut  = cms.double(0.1)
+    , QGModelName = cms.string("ResNet.pb")
     )
