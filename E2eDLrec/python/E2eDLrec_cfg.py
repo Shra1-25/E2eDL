@@ -6,11 +6,6 @@ options.register('skipEvents',
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.int,
     info = "skipEvents")
-options.register('maxEvents', 
-    default=10, 
-    mult=VarParsing.VarParsing.multiplicity.singleton,
-    mytype=VarParsing.VarParsing.varType.int,
-    info = "maxEvents")
 # TODO: put this option in cmsRun scripts
 options.register('processMode', 
     default='JetLevel', 
@@ -53,7 +48,7 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = cms.string('80X_dataRun2_HLT_v12')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5) ) #options.maxEvents
+process.maxEvents = cms.untracked.PSet( input = options.maxEvents ) #options.maxEvents
 process.maxEvents = options.maxEvents
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
