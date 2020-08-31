@@ -67,7 +67,7 @@ process.load("ProdTutorial.ProducerTest.QGInference_cfi")
 process.load("ProdTutorial.ProducerTest.TopInference_cfi")
 #process.load("E2eDL.E2eDLrec.TopInference_cfi")
 process.ProducerFrames.mode = cms.string('JetLevel')#options.processMode
-print("test detImg: "+process.ProducerFrames.tp)
+#print("test detImg: "+process.ProducerFrames.tp)
 #process.out = cms.OutputModule("PoolOutputModule",
 #    fileName = cms.untracked.string('myOutputFile.root')
 #    ,outputCommands = cms.untracked.vstring('drop *',
