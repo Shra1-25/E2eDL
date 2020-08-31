@@ -19,7 +19,7 @@ EGProducer::EGProducer(const edm::ParameterSet& iConfig)
  EGTree = fs->make<TTree>("EGTree", "RecHit tree");
  branchesPhotonSel ( EGTree, fs );
  
- //modelName = iConfig.getParameter<std::string>("EGModelName");
+ std::string modelName = iConfig.getParameter<std::string>("EGModelName");
  
  produces<std::vector<float>> ("EBenergyClass");
  produces<EB_photonFrames> ("photonFramePredSeedCollection");
@@ -48,7 +48,7 @@ EGProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    EB_photonFrames vEB_photonFrames;
  
    //producing cropped frames, getting photon seeds and running inference for getting their prediction
-   get_photons(iEvent, iSetup, vEB_photonFrames );//stored in vEB_frames vectors
+   get_photons(iEvent, iSetup, vEB_photonFrames, modelName );//stored in vEB_frames vectors
 
    // Code (Commented below) to verify photonFrameJetCollection Branch of edm root file.
    /*std::cout<<"Current size of photon jet collection: "<<vEB_photonFrames.size()<<std::endl;
