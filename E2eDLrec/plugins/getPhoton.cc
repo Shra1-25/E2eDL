@@ -29,13 +29,13 @@ struct pho_map {
 
 std::vector<pho_map> vPhos;
 
-void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& iSetup, EB_photonFrames& vEB_photonFrames){
+void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& iSetup, EB_photonFrames& vEB_photonFrames, std::string modelName){
  edm::Handle<PhotonCollection> photons;
  iEvent.getByToken(photonCollectionT_, photons);
  
  edm::Handle<EcalRecHitCollection> EBRecHitsH;
  iEvent.getByToken(EBRecHitCollectionT_, EBRecHitsH);
- std::string modelName = iConfig.getParameter<std::string>("EGModelName");
+ 
  // Provides access to global cell position and coordinates below
  /*edm::ESHandle<CaloGeometry> caloGeomH;
  iSetup.get<CaloGeometryRecord>().get(caloGeomH);
