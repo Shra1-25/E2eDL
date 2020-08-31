@@ -150,16 +150,9 @@ DetImgProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    //auto photon_classes = std::make_unique<float>(10.0);
    fillEB( iEvent, iSetup );
    std::unique_ptr<std::vector<float>> EBenergy_edm (new std::vector<float>(vEB_energy_));
-   /*for (unsigned int i=0;i<vEB_energy_.size();i++){
-    std::cout<<"( "<<i/vEB_energy_width<<", "<<i%vEB_energy_width<<" ) = "<<vEB_energy_[i]<<" ";
-   }*/
+	
    std::cout<<" >> Adding EB done "<<std::endl;
-   //EBEnergy_edm->push_back(vEB_energy_);
-   //std::cout<<"Size1 is: "<<vEB_energy_.size()<<std::endl;
    std::cout<<" >> Size of EB Energy vector is: "<<std::move(EBenergy_edm).get()->size()<<std::endl;
-   // PhotonCollection 
-   //*photon_classes=get_photons(iEvent, iSetup );
-   //iEvent.put(std::move(photon_classes),"photonClasses");
    iEvent.put(std::move(EBenergy_edm),"EBenergy");
  
    fillHBHE (iEvent, iSetup );
@@ -201,25 +194,14 @@ DetImgProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    iEvent.put(std::move(TracksECALadjPt_max_edm),"TracksAtECALadjPtMax");
  
    std::cout<<" >> Added EB, HBHE, HBHE_EB, ECALstitched, TracksAtECALstitchedPt and TracksAtECALadjPt to edm root file"<<std::endl;
-   //EBEnergy_edm->clear();
-   //iEvent.put(photon_classes,"photon_classes");
-   // Fill RHTree
+ 
    RHTree->Fill();
-   //vEB_photon_frames.clear();
-   //h_sel->Fill( 1. );
+   
    nPassed++;
-   /*for (int frame_x=0; frame_x<vEB_frame_height;frame_x++){
-    for (int frame_y=0;frame_y<vEB_frame_width;frame_y++){
-     std::cout<<"yes "<<
-    }
-   }*/
+  
    
    std::cout<<std::endl;
-   //predict_tf();
-   //std::cout<<"TF_predict done "<<std::endl;
-   //int vec_size=61200;
-   //std::vector<float> vEB_energy;
-   //vEB_energy=read_vEB_energy(vec_size);
+   
    return;
 }
 
