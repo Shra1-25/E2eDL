@@ -1,8 +1,3 @@
-//#include "ProdTutorial/ProducerTest/plugins/QGProducer.h"
-/*#include "ProdTutorial/ProducerTest/plugins/EGProducer.h"
-#include "ProdTutorial/ProducerTest/plugins/predict_tf.h"
-#include "ProdTutorial/ProducerTest/plugins/croppingFrames.h"
-#include "ProdTutorial/ProducerTest/plugins/DetImgProducer.h"*/
 #include "E2eDL/E2eDLrec/plugins/EGProducer.h"
 #include "E2eDL/E2eDLrec/plugins/predict_tf.h"
 #include "E2eDL/E2eDLrec/plugins/croppingFrames.h"
@@ -55,15 +50,16 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
  vEB_photon_frames.clear();
  empty_vec.clear();
   
-  
+ // Selecting photon seeds.
  int iphi_, ieta_; // rows:ieta, cols:iphi
  std::cout<<"Photons size : "<<photons->size()<<std::endl;
- if (photons->size()<=0){std::cout<<" >> Prediction: -1"<<std::endl; 
-                          framePredCollection photonJetCollection;
-                          photonJetCollection.putPredCollection(vpredictions);
-                          photonJetCollection.putFrameCollection(empty_vec);
-                          vEB_photonFrames.push_back(photonJetCollection);
-                        }
+ if (photons->size()<=0){
+   std::cout<<" >> Prediction: -1"<<std::endl; 
+   framePredCollection photonJetCollection;
+   photonJetCollection.putPredCollection(vpredictions);
+   photonJetCollection.putFrameCollection(empty_vec);
+   vEB_photonFrames.push_back(photonJetCollection);
+  }
  for ( unsigned int iP = 0; iP < photons->size(); iP++ ) {
   PhotonRef iRecoPho( photons, iP );
   
@@ -107,6 +103,7 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
     std::cout<<" >> EB_energy is less than zero: "<<Emax<<std::endl;
     std::cout<<" >> Prediction: -1"<<std::endl; 
     //vpredictions.push_back(-1);
+    
     framePredCollection photonJetCollection;
     photonJetCollection.putPredCollection(vpredictions);
     photonJetCollection.putFrameCollection(empty_vec);
@@ -125,6 +122,7 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
   {  
     std::cout<<" >> Prediction: -1"<<std::endl;
     //vpredictions.push_back(-1);
+    
     framePredCollection photonJetCollection;
     photonJetCollection.putPredCollection(vpredictions);
     photonJetCollection.putFrameCollection(empty_vec);
@@ -136,21 +134,14 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
   }
   nPho++;
   
+  // Producing the cropped frames on the basis of seeds above
   vEB_frame=croppingFrames(vEB_energy_, ieta_Emax, iphi_Emax, 170,360,32,32);
-  /*for(int x_idx=0; x_idx<int(vEB_frame.size()); x_idx++){
-    for (int y_idx=0; y_idx<int(vEB_frame[0].size()); y_idx++){
-      std::cout<<"["<<x_idx<<", "<<y_idx<<"]: "<<vEB_frame[x_idx][y_idx];
-    }
-  }*/
+  
   std::cout<<" >> Current Photon frame is: "<<iP+1<<"/"<<photons->size()<<std::endl;
+  // Storing seeds,frames, and their predictions in the objects(of class framePredCollection) and collection(edm::SortedCollection<framePredCollection>) 
   framePredCollection photonJetCollection;
   photonJetCollection.putPredCollection(predict_tf(vEB_frame, modelName,"inputs","softmax_1/Sigmoid"));
-  /*vEB_flat_frame.clear();
-  for (int frame_x=0;frame_x<int(vEB_frame.size());frame_x++){
-    for (int frame_y=0;frame_y<int(vEB_frame[0].size());frame_y++){
-      vEB_flat_frame.push_back(vEB_frame[frame_x][frame_y]);
-    }
-  }*/
+  
   //std::cout<<" >> Size of flat frame: "<<vEB_flat_frame.size()<<std::endl;
   photonJetCollection.putFrameCollection(vEB_frame);
   photonJetCollection.putIetaSeed(ieta_Emax);
@@ -159,12 +150,7 @@ void EGProducer::get_photons ( const edm::Event& iEvent, const edm::EventSetup& 
   /*if (vEB_photon_frames.size()>0){ 
    RHTree->Branch(branchname,&vEB_photon_frames[vEB_photon_frames.size()-1]);
   }*/
-  /*for (int i=0;i<32;i++){
-    for (int j=0;j<32;j++){
-      std::cout<<"("<<vEB_flat_frame[i*32+j]<<", "<<vEB_frame[i][j]<<") ";
-    }
-    std::cout<<endl;
-  }*/
+  
  }
  return;
 }
