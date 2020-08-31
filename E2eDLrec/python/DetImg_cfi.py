@@ -27,6 +27,5 @@ ProducerFrames = cms.EDProducer('DetImgProducer'
     #granularity multiplier wrt ECAL maps for tracker and tracking RH images
     , granularityMultiPhi = cms.int32(1)
     , granularityMultiEta = cms.int32(1)
-    , tp=cms.string("hello!!")
     )
 
