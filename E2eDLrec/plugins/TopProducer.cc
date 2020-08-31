@@ -44,6 +44,7 @@ TopProducer::TopProducer(const edm::ParameterSet& iConfig)
  minJetPt_  = iConfig.getParameter<double>("minJetPt");
  maxJetEta_ = iConfig.getParameter<double>("maxJetEta");
  z0PVCut_   = iConfig.getParameter<double>("z0PVCut");
+ modelName = iConfig.getParameter<std::string>("TopQuarksModelName");
  std::cout << " >> Mode set to " << mode_ << std::endl;	
  if ( mode_ == "JetLevel" ) {
     doJets_ = true;
