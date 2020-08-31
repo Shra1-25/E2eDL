@@ -19,7 +19,7 @@ EGProducer::EGProducer(const edm::ParameterSet& iConfig)
  EGTree = fs->make<TTree>("EGTree", "RecHit tree");
  branchesPhotonSel ( EGTree, fs );
  
- std::string modelName = iConfig.getParameter<std::string>("EGModelName");
+ modelName = iConfig.getParameter<std::string>("EGModelName");
  
  produces<std::vector<float>> ("EBenergyClass");
  produces<EB_photonFrames> ("photonFramePredSeedCollection");
