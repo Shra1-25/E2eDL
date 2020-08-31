@@ -1,9 +1,3 @@
-/*#include "ProdTutorial/ProducerTest/plugins/TopProducer.h"
-#include "ProdTutorial/ProducerTest/plugins/DetImgProducer.h"
-#include "ProdTutorial/ProducerTest/plugins/predict_tf.h"
-#include "ProdTutorial/ProducerTest/plugins/croppingFrames.h"
-#include "ProdTutorial/ProducerTest/plugins/frameStriding.h"
-#include "PhysicsTools/TensorFlow/interface/TensorFlow.h"*/
 #include "E2eDL/E2eDLrec/plugins/TopProducer.h"
 #include "E2eDL/E2eDLrec/plugins/DetImgProducer.h"
 #include "E2eDL/E2eDLrec/plugins/predict_tf.h"
@@ -44,7 +38,7 @@ TopProducer::TopProducer(const edm::ParameterSet& iConfig)
  minJetPt_  = iConfig.getParameter<double>("minJetPt");
  maxJetEta_ = iConfig.getParameter<double>("maxJetEta");
  z0PVCut_   = iConfig.getParameter<double>("z0PVCut");
- modelName = iConfig.getParameter<std::string>("TopQuarksModelName");
+ std::string modelName = iConfig.getParameter<std::string>("TopQuarksModelName");
  std::cout << " >> Mode set to " << mode_ << std::endl;	
  if ( mode_ == "JetLevel" ) {
     doJets_ = true;
@@ -142,6 +136,7 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    nTotal++;
    vJetSeed_ieta_.clear(); vJetSeed_iphi_.clear();
    bool passedSelection = false;
+   // Selecting Jet Seeds (ak8) and storing them in edm root file.
    if ( doJets_ ) {
      std::cout<<" >> doJets set"<<std::endl;
      passedSelection = runEventSel_jet( iEvent, iSetup );
@@ -202,19 +197,16 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    iEvent.getByToken(TracksAtECALstitchedPt_token, TracksAtECALstitchedPt_handle);
    edm::Handle<std::vector<float>> TracksAtECALadjPt_handle;
    iEvent.getByToken(TracksAtECALadjPt_token, TracksAtECALadjPt_handle);
-   /*edm::Handle<std::vector<int>> JetSeed_ieta_handle;
-   iEvent.getByToken(JetSeed_ieta_token, JetSeed_ieta_handle);
-   edm::Handle<std::vector<int>> JetSeed_iphi_handle;
-   iEvent.getByToken(JetSeed_iphi_token, JetSeed_iphi_handle);*/
+   
    edm::Handle<std::vector<float>> HBHEenergy_handle;
    iEvent.getByToken(HBHEenergy_token, HBHEenergy_handle);
    
+   //declaring the collection which will store the seeds, frames and their predictions. 
    std::vector<std::vector<float>> empty_vec;
    std::vector<float>vECALstitched=*ECALstitched_energy_handle;
    std::vector<float>vTracksAtECALstitchedPt=*TracksAtECALstitchedPt_handle;
    std::vector<float>vTracksAtECALadjPt=*TracksAtECALadjPt_handle;
-   /*std::vector<int>vJetSeed_ieta=*JetSeed_ieta_handle;
-   std::vector<int>vJetSeed_iphi=*JetSeed_iphi_handle;*/
+   
    topqJetCollection HBHEJetCollection;
    topqJetCollection ECALstitchedJetCollection;
    topqJetCollection TracksAtECALstitchedJetCollectionPt;
@@ -234,34 +226,20 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    vTracksAtECALadjPt_frame.clear();
    for (int idx=0;idx<int(vJetSeed_ieta_.size());idx++){
     std::cout<<"Generating stitched and adjustable ECAL frames and their track frames from the jet seed "<<idx+1<<"/"<<vJetSeed_ieta_.size()<<" with seed value: ("<<vJetSeed_ieta_[idx]<<","<<vJetSeed_iphi_[idx]<<")"<<std::endl;
-    if(vJetSeed_ieta_[idx]>=0) {vECALstitched_frame=croppingFrames(vECALstitched, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125); 
-                               	vTracksAtECALstitchedPt_frame=croppingFrames(vTracksAtECALstitchedPt, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125);
-				vTracksAtECALadjPt_frame=croppingFrames(vTracksAtECALadjPt, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125);
-    /*string filename="ECALstitched_"+std::to_string(nPassed+1)+"_"+std::to_string(idx+1)+".csv";
-    std::ofstream file1(filename);
-    for (int i=0;i<int(vECALstitched_frame.size());i++){
-     for(int j=0;j<int(vECALstitched_frame[0].size());j++){
-      file1<<vECALstitched_frame[i][j];
-       if (j!=int(vECALstitched_frame[0].size())-1){file1<<",";}
-      }
-     file1<<"\n";
-    }*/
-    /*filename="TracksAtECALstitchedPt_"+std::to_string(nPassed+1)+"_"+std::to_string(idx+1)+".csv";
-    std::ofstream file2(filename);
-    for (int i=0;i<int(vTracksAtECALstitchedPt_frame.size());i++){
-     for(int j=0;j<int(vTracksAtECALstitchedPt_frame[0].size());j++){
-       file2<<vTracksAtECALstitchedPt_frame[i][j];
-       if (j!=int(vTracksAtECALstitchedPt_frame[0].size())-1){file2<<",";}
-      }
-     file2<<"\n";
-    }*/
-    //vECALstitchedClass.push_back(predict_tf(vECALstitched_frame, "ResNet.pb", "inputs","softmax_1/Sigmoid"));
+    if(vJetSeed_ieta_[idx]>=0) {
+    // Producing cropped frames.
+    vECALstitched_frame=croppingFrames(vECALstitched, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125); 
+    vTracksAtECALstitchedPt_frame=croppingFrames(vTracksAtECALstitchedPt, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125);
+    vTracksAtECALadjPt_frame=croppingFrames(vTracksAtECALadjPt, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125);
+    
+    // running inference on the cropped frames
     vECALstitchedClass = predict_tf(vECALstitched_frame, modelName, "inputs","outputs");
     //vTracksAtECALstitchedPtClass.push_back(predict_tf(vTracksAtECALstitchedPt_frame, "ResNet.pb", "inputs", "softmax_1/Sigmoid"));
     vTracksAtECALstitchedPtClass = predict_tf(vTracksAtECALstitchedPt_frame, modelName, "inputs", "outputs");
     //vTracksAtECALadjPtClass.push_back(predict_tf(vTracksAtECALadjPt_frame, "ResNet.pb", "inputs", "softmax_1/Sigmoid"));
     vTracksAtECALadjPtClass = predict_tf(vTracksAtECALadjPt_frame, modelName, "inputs", "outputs");
-				
+	
+    // Storing seeds, frames and their predictions in the user defined class framePredCollection 
     framePredCollection topqECALstitchedJetCollection;
     framePredCollection topqTracksAtECALstitchedJetCollection;
     framePredCollection topqTracksAtECALadjJetCollection;
@@ -318,6 +296,7 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    }
    std::cout<<std::endl; //Stitched ECAL and their track frames created.
    	
+   // Doing the above processing for HBHE_energy vectors
    std::vector<float> vHBHEenergy=*HBHEenergy_handle;
    std::cout<<" >> Size of HBHE energy vector read: "<<vHBHEenergy.size()<<std::endl;
    std::vector<std::vector<float>> vHBHEenergy_strided = frameStriding(vHBHEenergy,56,72,5,5);
@@ -332,27 +311,7 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    for (int idx=0;idx<int(vJetSeed_ieta_.size());idx++){
     std::cout<<"Generating HBHE energy frames from the jet seed "<<idx+1<<"/"<<vJetSeed_ieta_.size()<<" with seed value: ("<<vJetSeed_ieta_[idx]<<","<<vJetSeed_iphi_[idx]<<")"<<std::endl;
     if(vJetSeed_ieta_[idx]>=0) {vHBHEenergy_frame=croppingFrames(vHBHE_strided_flat, vJetSeed_ieta_[idx], vJetSeed_iphi_[idx], 280, 360, 125, 125); 
-   /*for(int i=140;i<141;i++){
-    for (int ki=0; ki<5;ki++){
-     for (int j=0;j<360;j++){
-      for (int kj=0;kj<5;kj++){
-      std::cout<<"("<<i<<","<<j<<"): "<<vHBHEenergy_strided[5*i+ki][5*j+kj]<<" "<<vHBHEenergy[i*360+j]/25<<" ";
-     }
-     }
-    }
-   }
-   std::cout<<std::endl;*/
-    //std::cout<<std::endl;
-    /*string filename="HBHEenergy"+std::to_string(nPassed+1)+".csv";
-    std::ofstream file3(filename);
-    for (int i=0;i<int(vHBHEenergy_frame.size());i++){
-     for(int j=0;j<int(vHBHEenergy_frame[0].size());j++){
-      file3<<vHBHEenergy_frame[i][j];
-      if (j!=int(vHBHEenergy_frame[0].size())-1){file3<<",";}
-     }
-    file3<<"\n";
-   }*/
-   //vHBHEenergyClass.push_back(predict_tf(vHBHEenergy_frame, "qg_model.pb", "inputs", "softmax_1/Sigmoid"));
+   
    vHBHEenergyClass = predict_tf(vHBHEenergy_frame, modelName, "inputs", "outputs");//"softmax_1/Sigmoid");
    framePredCollection topqHBHEJetCollection;
    topqHBHEJetCollection.putPredCollection(vHBHEenergyClass);
