@@ -256,11 +256,11 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
      file2<<"\n";
     }*/
     //vECALstitchedClass.push_back(predict_tf(vECALstitched_frame, "ResNet.pb", "inputs","softmax_1/Sigmoid"));
-    vECALstitchedClass = predict_tf(vECALstitched_frame, "ResNet.pb", "inputs","outputs");
+    vECALstitchedClass = predict_tf(vECALstitched_frame, modelName, "inputs","outputs");
     //vTracksAtECALstitchedPtClass.push_back(predict_tf(vTracksAtECALstitchedPt_frame, "ResNet.pb", "inputs", "softmax_1/Sigmoid"));
-    vTracksAtECALstitchedPtClass = predict_tf(vTracksAtECALstitchedPt_frame, "ResNet.pb", "inputs", "outputs");
+    vTracksAtECALstitchedPtClass = predict_tf(vTracksAtECALstitchedPt_frame, modelName, "inputs", "outputs");
     //vTracksAtECALadjPtClass.push_back(predict_tf(vTracksAtECALadjPt_frame, "ResNet.pb", "inputs", "softmax_1/Sigmoid"));
-    vTracksAtECALadjPtClass = predict_tf(vTracksAtECALadjPt_frame, "ResNet.pb", "inputs", "outputs");
+    vTracksAtECALadjPtClass = predict_tf(vTracksAtECALadjPt_frame, modelName, "inputs", "outputs");
 				
     framePredCollection topqECALstitchedJetCollection;
     framePredCollection topqTracksAtECALstitchedJetCollection;
@@ -353,7 +353,7 @@ TopProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     file3<<"\n";
    }*/
    //vHBHEenergyClass.push_back(predict_tf(vHBHEenergy_frame, "qg_model.pb", "inputs", "softmax_1/Sigmoid"));
-   vHBHEenergyClass = predict_tf(vHBHEenergy_frame, "ResNet.pb", "inputs", "outputs");//"softmax_1/Sigmoid");
+   vHBHEenergyClass = predict_tf(vHBHEenergy_frame, modelName, "inputs", "outputs");//"softmax_1/Sigmoid");
    framePredCollection topqHBHEJetCollection;
    topqHBHEJetCollection.putPredCollection(vHBHEenergyClass);
    topqHBHEJetCollection.putFrameCollection(vHBHEenergy_frame);
