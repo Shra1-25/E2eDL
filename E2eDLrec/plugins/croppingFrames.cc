@@ -1,14 +1,10 @@
-/*#include "ProdTutorial/ProducerTest/plugins/DetImgProducer.h"
-#include "ProdTutorial/ProducerTest/plugins/EGProducer.h"
-#include "ProdTutorial/ProducerTest/plugins/QGProducer.h"*/
-//#include "ProdTutorial/ProducerTest/plugins/EGProducer.h"
-//#include "ProdTutorial/ProducerTest/plugins/QGProducer.h"
-//#include "ProdTutorial/ProducerTest/plugins/croppingFrames.h"
 #include "E2eDL/E2eDLrec/plugins/croppingFrames.h"
-//using namespace std::vector;
 
+// Cropping frames with given width and height: frame_width, frame_height
 std::vector<std::vector<float>> croppingFrames(std::vector<float>& vdetector_image, int ieta_seed, int iphi_seed, int detImg_height, int detImg_width, int frame_height, int frame_width){
   std::vector<std::vector<float>> vframe = std::vector<std::vector<float>> (frame_height,std::vector<float> (frame_width, 0.0));
+  
+  // Determining start and end indices for the frames to be cropped 
   int start_x=0;
   int end_x=0;
   int start_y=0;
@@ -48,8 +44,8 @@ std::vector<std::vector<float>> croppingFrames(std::vector<float>& vdetector_ima
   else {
    end_x=ieta_seed+half_frame_height;
   }
-  /*std::string filename = "frame_" + std::to_string(iP+1) + "_" + std::to_string(nPassed+1) + ".csv";
-  std::ofstream frame_file(filename);*/
+  
+  // Cropping the flat input vector based on the above determined start and end indices
   for (int x_idx = start_x; x_idx<=end_x;x_idx++){
    for (int y_idx = 0/*start_y*/; y_idx<frame_width/*=end_y*/;y_idx++){
     vframe[x_idx-start_x+buff_x][y_idx/*y_idx-start_y+buff_y*/]=vdetector_image[x_idx*detImg_width+(y_idx+buff_y+start_y)%detImg_width];
