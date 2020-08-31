@@ -97,7 +97,7 @@ class EGProducer : public edm::stream::EDProducer<> {
       static const int nPhotons = 2;
       TTree* EGTree;
    
-      std::string modelName   
+      std::string modelName;  
    
       std::vector<float> vEB_energy_;
       std::vector<std::vector<float>> vEB_frame; //= std::vector<std::vector<float>> (vEB_frame_height,std::vector<float> (vEB_frame_width, 0.0));
