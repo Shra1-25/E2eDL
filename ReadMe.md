@@ -4,5 +4,4 @@ Please run the following commands in AFS in the src directory of CMSSW_x_x_x (pr
  $ scram b  
  $ cmsRun E2eDL/E2eDLrec/python/E2eDLrec_cfg.py \  
  $ inputFiles=file:[filename.root]  
- 
-    
+For more details you can view: https://shra1-25.github.io/E2eDLrecReport/ 
