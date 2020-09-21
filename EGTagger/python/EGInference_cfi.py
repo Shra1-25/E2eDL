@@ -7,9 +7,15 @@ options.register('skipEvents',
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.int,
     info = "skipEvents")
+# Name of the EGInference model to be used for inference.
+options.register('EGModelName',
+    default='e_vs_ph_model.pb',
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.string,
+    info = "EGInference Model name")
 options.parseArguments()
 
-process = cms.Process("EGFrameProducer")
+process = cms.Process("EGClassifier")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
@@ -35,6 +41,8 @@ print (" >> Loaded",len(options.inputFiles),"input files from list.")
 
 process.load("E2eDL.E2eDLrec.DetImg_cfi")
 process.load("E2eDL.FrameProducers.EGFrameProducer_cfi")
+process.load("E2eDL.EGTagger.EGTagger_cfi")
+process.EGTagger.EGModelName = options.EGModelName
 
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('SinglePhotonPt50_noPU_AODSIM+EGFrames.root')
@@ -43,7 +51,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string("ntuple.root")#options.outputFile
     )
 
-process.p = cms.Path(process.ProducerFrames+process.EGFrames)
+process.p = cms.Path(process.ProducerFrames+process.EGFrames+process.EGTagger)
 process.ep=cms.EndPath(process.out)
 
 #process.Timing = cms.Service("Timing",

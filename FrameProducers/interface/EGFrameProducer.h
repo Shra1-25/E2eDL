@@ -24,11 +24,8 @@
 //#include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
 //#include "DataFormats/TrackingRecHit/interface/TrackingRecHitFwd.h"
 
-#include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
 #include "E2eDL/DataFormats/interface/FrameCollections.h"
 #include "E2eDL/FrameProducers/interface/FrameCropping.h"
-//#include "E2eDL/E2eDLrec/plugins/DetImgProducer.h"
-//#include "E2eDL/E2eDLrec/plugins/predict_tf.h"
 
 using namespace std;
 
@@ -63,7 +60,7 @@ class EGFrameProducer : public edm::stream::EDProducer<> {
       // Input tokens
       edm::EDGetTokenT<EcalRecHitCollection> tEBRecHitCollection;
       edm::EDGetTokenT<PhotonCollection>     tPhotonCollection;
-      edm::EDGetTokenT<e2e::Frame1D>         tEBenergy;
+      edm::EDGetTokenT<e2e::Frame1D>         tEBenergyCollection;
 
       // Handles
       edm::Handle<PhotonCollection>     hPhoton;
@@ -72,10 +69,6 @@ class EGFrameProducer : public edm::stream::EDProducer<> {
 
       // Detector image switches
       bool doEBenergy;
-
-      // DL inference model
-      bool doInference;
-      std::string modelName;
 
       // Output collections to be produced and values stored in them
       std::unique_ptr<e2e::PhoPredCollection>    cPhoProbs;

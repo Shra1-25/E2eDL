@@ -4,18 +4,13 @@ EGFrameProducer::EGFrameProducer(const edm::ParameterSet& iConfig)
 {
   // Input tokens
   tPhotonCollection   = consumes<PhotonCollection>(iConfig.getParameter<edm::InputTag>("photonCollection"));
-  tEBenergy           = consumes<e2e::Frame1D>(iConfig.getParameter<edm::InputTag>("EBEnergy"));
+  tEBenergyCollection = consumes<e2e::Frame1D>(iConfig.getParameter<edm::InputTag>("EBEnergy"));
   tEBRecHitCollection = consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEBRecHitCollection"));
-
-  // DL inference model
-  doInference = iConfig.getParameter<bool>("doInference");
-  modelName   = iConfig.getParameter<std::string>("EGModelName");
 
   // Detector image switches
   doEBenergy = iConfig.getParameter<bool>("doEBenergy");
 
   // Output collections to be produced
-  produces<e2e::PhoPredCollection>   ("EGProbs");
   produces<e2e::PhoSeedCollection>   ("EGSeeds");
   produces<e2e::PhoFrame3DCollection>("EGFrames");
 }
@@ -33,7 +28,7 @@ EGFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Load required tokens into input collection handles
   iEvent.getByToken( tPhotonCollection, hPhoton );
   if ( doEBenergy ) {
-    iEvent.getByToken( tEBenergy,           hEBenergy  );
+    iEvent.getByToken( tEBenergyCollection, hEBenergy  );
     iEvent.getByToken( tEBRecHitCollection, hEBRecHits );
   }
 
@@ -70,30 +65,21 @@ EGFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   } // photons
 
-  //_____ Run DL inference _____//
-
-  // Run inference on `vPhoFrames` batch of size nPhos*nFrameD*nFrameH*nFrameW: store output in `vPhoProbs`
-  // Running on entire batch at once maximizes computing parellization
-  // if ( doInference ) e2e::runInference( vPhoProbs, vPhoFrames, modelName );
-
   //_____ Store products associated with each photon _____//
 
   // Initialize pointers to edm::AssociationVector (key,val) collections
   // These collections create explicit associations between the photon object (key) and the stored product (val)
-  cPhoProbs  = std::make_unique<e2e::PhoPredCollection>   ( reco::PhotonRefProd(hPhoton) );
   cPhoSeeds  = std::make_unique<e2e::PhoSeedCollection>   ( reco::PhotonRefProd(hPhoton) );
   cPhoFrames = std::make_unique<e2e::PhoFrame3DCollection>( reco::PhotonRefProd(hPhoton) );
 
   // Set association between photon ref (key) and products to be stored (val)
   for ( unsigned int iP = 0; iP < hPhoton->size(); iP++ ) {
     PhotonRef iRecoPho( hPhoton, iP );
-    cPhoProbs->setValue ( iP, vPhoProbs[iP]  );
     cPhoSeeds->setValue ( iP, vPhoSeeds[iP]  );
     cPhoFrames->setValue( iP, vPhoFrames[iP] );
   } // photons
 
   // Put collections into output EDM file
-  iEvent.put( std::move(cPhoProbs),  "EGProbs"  );
   iEvent.put( std::move(cPhoSeeds),  "EGSeeds"  );
   iEvent.put( std::move(cPhoFrames), "EGFrames" );
 
