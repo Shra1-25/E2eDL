@@ -26,9 +26,9 @@
 
 #include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
 #include "E2eDL/DataFormats/interface/FrameCollections.h"
-#include "E2eDL/Tools/interface/FrameCropping.h"
-#include "E2eDL/E2eDLrec/plugins/DetImgProducer.h"
-#include "E2eDL/E2eDLrec/plugins/predict_tf.h"
+#include "E2eDL/FrameProducers/interface/FrameCropping.h"
+//#include "E2eDL/E2eDLrec/plugins/DetImgProducer.h"
+//#include "E2eDL/E2eDLrec/plugins/predict_tf.h"
 
 using namespace std;
 

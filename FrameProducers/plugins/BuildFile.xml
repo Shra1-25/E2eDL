@@ -10,8 +10,7 @@
 <use name="DataFormats/PatCandidates"/>
 <use name="PhysicsTools/TensorFlow" />
 <use name="E2eDL/DataFormats"/>
-<use name="E2eDL/Tools"/>
-<use name="E2eDL/E2eDLrec"/>
+<use name="E2eDL/FrameProducers"/>
 <use name="Calibration/IsolatedParticles"/>
 <use name="DQM/HcalCommon"/>
 <flags EDM_PLUGIN="1"/>

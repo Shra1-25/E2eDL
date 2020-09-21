@@ -1,4 +1,4 @@
-#include "E2eDL/Tools/interface/FrameCropping.h"
+#include "E2eDL/FrameProducers/interface/FrameCropping.h"
 
 // Cropping frames with given width and height: frame_width, frame_height
 void e2e::getFrame ( e2e::Frame2D& vframe, const e2e::seed& objSeed, const e2e::Frame1D* vdetector_image,

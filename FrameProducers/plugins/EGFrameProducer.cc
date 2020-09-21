@@ -1,4 +1,4 @@
-#include "E2eDL/EGFrameProducer/interface/EGFrameProducer.h"
+#include "E2eDL/FrameProducers/interface/EGFrameProducer.h"
 
 EGFrameProducer::EGFrameProducer(const edm::ParameterSet& iConfig)
 {

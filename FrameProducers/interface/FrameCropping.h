@@ -1,5 +1,5 @@
-#ifndef RecoE2E_FrameCropping_h
-#define RecoE2E_FrameCropping_h
+#ifndef RecoE2E_FrameProducers_h
+#define RecoE2E_FrameProducers_h
 
 #include <iostream>
 #include <vector>
