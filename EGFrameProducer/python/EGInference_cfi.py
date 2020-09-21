@@ -41,8 +41,8 @@ print (" >> Loaded",len(options.inputFiles),"input files from list.")
 
 process.load("E2eDL.E2eDLrec.DetImg_cfi")
 process.load("E2eDL.EGFrameProducer.EGFrameProducer_cfi")
-process.EGInference.EGModelName  = options.EGModelName
-process.EGInference.runInference = cms.bool(False)
+process.EGInference.EGModelName = options.EGModelName
+process.EGInference.doInference = cms.bool(False)
 
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('SinglePhotonPt50_noPU_AODSIM+EGFrames.root')

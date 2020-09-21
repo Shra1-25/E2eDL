@@ -37,7 +37,7 @@ using reco::PhotonRef;
 //using pat::PhotonCollection;
 //using pat::PhotonRef;
 
-static const float ptCutEB    = 10.;        // min pt cut [GeV] photons
+static const float ptCutEB    = 10.;        // min pt cut [GeV] for EB photons
 static const float etaCutEB   = 1.44;       // max eta for EB photons
 static const float defaultVal = -1.;        // default value to fill for invalid objects
 static const unsigned int nSeedCoords = 2;  // no. of elements to specify frame seed coordinates
@@ -74,7 +74,7 @@ class EGFrameProducer : public edm::stream::EDProducer<> {
       bool doEBenergy;
 
       // DL inference model
-      bool runInference;
+      bool doInference;
       std::string modelName;
 
       // Output collections to be produced and values stored in them

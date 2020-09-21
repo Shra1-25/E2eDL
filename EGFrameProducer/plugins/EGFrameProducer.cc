@@ -8,8 +8,8 @@ EGFrameProducer::EGFrameProducer(const edm::ParameterSet& iConfig)
   tEBRecHitCollection = consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEBRecHitCollection"));
 
   // DL inference model
-  runInference = iConfig.getParameter<bool>("runInference");
-  modelName    = iConfig.getParameter<std::string>("EGModelName");
+  doInference = iConfig.getParameter<bool>("doInference");
+  modelName   = iConfig.getParameter<std::string>("EGModelName");
 
   // Detector image switches
   doEBenergy = iConfig.getParameter<bool>("doEBenergy");
@@ -59,7 +59,6 @@ EGFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     PhotonRef iRecoPho( hPhoton, iP );
 
     // Find photon seed: store output in `vPhoSeeds[iP]`
-    //e2e::getEGseed ( vPhoSeeds[iP], iRecoPho, hEBRecHits );
     getEGseed ( vPhoSeeds[iP], iRecoPho, hEBRecHits );
     edm::LogInfo("EGFrameProducer") << " >> seed(ieta,iphi):" << vPhoSeeds[iP][0] << "," << vPhoSeeds[iP][1];
 
@@ -75,7 +74,7 @@ EGFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   // Run inference on `vPhoFrames` batch of size nPhos*nFrameD*nFrameH*nFrameW: store output in `vPhoProbs`
   // Running on entire batch at once maximizes computing parellization
-  // if ( runInference ) e2e::run_inference( vPhoProbs, vPhoFrames, modelName );
+  // if ( doInference ) e2e::runInference( vPhoProbs, vPhoFrames, modelName );
 
   //_____ Store products associated with each photon _____//
 
@@ -117,6 +116,7 @@ EGFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 void EGFrameProducer::getEGseed ( e2e::seed& EGseed, const PhotonRef& iRecoPho, const edm::Handle<EcalRecHitCollection>& hEBRecHits )
 {
 
+  if ( iRecoPho->pt()       < ptCutEB  ) return;
   if ( abs(iRecoPho->eta()) > etaCutEB ) return; // TODO: implement EE seed finding
 
   // Get underlying super cluster (SC) or set of DetIds corresponding to energy deposits associated with photon
