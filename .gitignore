@@ -1,0 +1,5 @@
+*.root
+*.pyc
+__*
+.*
+!.gitignore
